@@ -1,0 +1,620 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ffffff">
+<meta name="description" content="Find products, post what you need and receive offers from sellers.">
+<title>Everyday Update News | Find It. Request It. Get It.</title>
+
+<style>
+:root {
+  --blue: #2457e6;
+  --dark: #172033;
+  --muted: #718096;
+  --light: #f5f7fb;
+  --border: #e8edf4;
+  --white: #fff;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: var(--dark);
+  background: #fff;
+}
+button, input, textarea, select { font: inherit; }
+button { cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+header {
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5%;
+  border-bottom: 1px solid var(--border);
+  background: white;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+.logo {
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+.logo span { color: var(--blue); }
+nav { display: flex; align-items: center; gap: 24px; }
+nav a { font-size: 14px; font-weight: 600; }
+nav a:hover { color: var(--blue); }
+.header-actions { display: flex; gap: 9px; align-items: center; }
+.btn {
+  border: 0;
+  border-radius: 9px;
+  padding: 12px 17px;
+  font-weight: 700;
+  font-size: 14px;
+}
+.btn-primary { background: var(--blue); color: white; }
+.btn-primary:hover { background: #1744c6; }
+.btn-light { background: #eef3ff; color: var(--blue); }
+.btn-outline { background: white; border: 1px solid var(--border); color: var(--dark); }
+.menu-btn { display: none; background: none; border: 0; font-size: 25px; }
+.hero {
+  background: linear-gradient(120deg, #f1f5ff, #f8faff);
+  padding: 65px 5% 55px;
+  text-align: center;
+}
+.hero h1 {
+  font-size: clamp(32px, 5vw, 52px);
+  line-height: 1.12;
+  margin: 0 auto 17px;
+  max-width: 780px;
+  letter-spacing: -1.8px;
+}
+.hero h1 span { color: var(--blue); }
+.hero p {
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.7;
+  max-width: 600px;
+  margin: 0 auto 27px;
+}
+.search-box {
+  max-width: 720px;
+  margin: auto;
+  display: flex;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 7px;
+  box-shadow: 0 8px 30px #15264b0c;
+}
+.search-box input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  padding: 12px;
+}
+.request-area {
+  max-width: 900px;
+  margin: -1px auto 0;
+  padding: 0 5%;
+  position: relative;
+}
+.request-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  box-shadow: 0 8px 30px #1720330b;
+  padding: 24px;
+  margin-top: -1px;
+}
+.request-card h2 { margin: 0 0 8px; font-size: 21px; }
+.request-card p { color: var(--muted); margin: 0 0 18px; font-size: 14px; }
+.request-row { display: flex; gap: 10px; }
+.request-row input {
+  min-width: 0;
+  flex: 1;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 13px;
+  outline: none;
+}
+section { padding: 48px 5%; }
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 22px;
+  gap: 12px;
+}
+.section-heading h2 { font-size: 23px; margin: 0; }
+.section-heading a { color: var(--blue); font-size: 14px; font-weight: 700; }
+.categories {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 13px;
+}
+.category {
+  background: var(--light);
+  border-radius: 12px;
+  padding: 20px 8px;
+  text-align: center;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+.category:hover { border-color: #b8c9ff; background: #f0f4ff; }
+.category .emoji { font-size: 29px; display: block; margin-bottom: 9px; }
+.category strong { font-size: 13px; }
+.products {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+.product {
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  overflow: hidden;
+  background: white;
+  transition: transform .2s;
+}
+.product:hover { transform: translateY(-3px); }
+.product img {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  background: var(--light);
+}
+.product-info { padding: 13px; }
+.product-info h3 { font-size: 15px; margin: 0 0 8px; }
+.price { font-size: 17px; font-weight: 800; color: var(--blue); }
+.seller { color: var(--muted); font-size: 12px; margin-top: 8px; }
+.product-info button { width: 100%; margin-top: 12px; }
+.empty-note {
+  color: var(--muted);
+  text-align: center;
+  padding: 25px;
+  grid-column: 1 / -1;
+}
+.how {
+  background: var(--light);
+}
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.step {
+  background: white;
+  padding: 24px;
+  border-radius: 13px;
+}
+.step-number {
+  width: 38px; height: 38px;
+  display: grid; place-items: center;
+  background: #eaf0ff;
+  color: var(--blue);
+  border-radius: 10px;
+  font-weight: 800;
+}
+.step h3 { margin-bottom: 8px; }
+.step p { color: var(--muted); font-size: 14px; line-height: 1.6; }
+.join {
+  text-align: center;
+  background: #172b59;
+  color: white;
+  padding: 50px 5%;
+}
+.join p { color: #d0d9ee; line-height: 1.6; }
+.join .btn { margin: 7px; }
+footer {
+  padding: 28px 5%;
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  color: var(--muted);
+  font-size: 13px;
+  flex-wrap: wrap;
+}
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: #101828a8;
+  padding: 18px;
+  overflow-y: auto;
+  align-items: center;
+  justify-content: center;
+}
+.modal.show { display: flex; }
+.modal-content {
+  width: 100%;
+  max-width: 470px;
+  background: white;
+  padding: 26px;
+  border-radius: 15px;
+  position: relative;
+  max-height: 92vh;
+  overflow-y: auto;
+}
+.close {
+  position: absolute;
+  right: 17px;
+  top: 12px;
+  border: 0;
+  background: none;
+  font-size: 25px;
+}
+.modal-content h2 { margin: 0 35px 8px 0; }
+.modal-content p { color: var(--muted); font-size: 14px; line-height: 1.5; }
+.modal-content label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  margin: 14px 0 6px;
+}
+.modal-content input, .modal-content textarea, .modal-content select {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  outline-color: var(--blue);
+}
+.modal-content textarea { min-height: 100px; resize: vertical; }
+.modal-content .btn { width: 100%; margin-top: 17px; }
+.modal-link { color: var(--blue); font-weight: 700; cursor: pointer; }
+.form-message { font-size: 13px; margin-top: 12px; color: var(--blue); }
+@media(max-width:850px) {
+  .categories { grid-template-columns: repeat(3, 1fr); }
+  .products { grid-template-columns: repeat(2, 1fr); }
+  nav { gap: 12px; }
+}
+@media(max-width:620px) {
+  header { padding: 0 4%; height: 62px; }
+  nav {
+    display: none;
+    position: absolute;
+    top: 61px; left: 0; right: 0;
+    background: white;
+    padding: 20px;
+    border-bottom: 1px solid var(--border);
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  nav.open { display: flex; }
+  .menu-btn { display: block; }
+  .header-actions .btn { padding: 10px; font-size: 12px; }
+  .hero { padding: 45px 5% 40px; }
+  .hero p { font-size: 14px; }
+  .request-card { padding: 18px; }
+  .request-row { flex-direction: column; }
+  .categories { grid-template-columns: repeat(3, 1fr); gap: 9px; }
+  .category { padding: 15px 5px; }
+  .category strong { font-size: 11px; }
+  section { padding: 35px 5%; }
+  .products { gap: 10px; }
+  .product img { height: 145px; }
+  .product-info { padding: 10px; }
+  .product-info h3 { font-size: 13px; }
+  .price { font-size: 15px; }
+  .steps { grid-template-columns: 1fr; }
+  footer { flex-direction: column; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <a class="logo" href="#">Everyday<span>Update</span></a>
+
+  <nav id="navigation">
+    <a href="#home">Home</a>
+    <a href="#categories">Categories</a>
+    <a href="#recommended">Products</a>
+    <a href="#how">How it works</a>
+  </nav>
+
+  <div class="header-actions">
+    <button class="btn btn-outline" onclick="openModal('loginModal')">Log in</button>
+    <button class="btn btn-primary" onclick="openModal('registerModal')">Sign up</button>
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+  </div>
+</header>
+
+<main>
+<div class="hero" id="home">
+  <h1>Find what you need.<br><span>Get offers from sellers.</span></h1>
+  <p>Can't find the product you're looking for? Tell us what you need and let sellers come to you with offers.</p>
+
+  <div class="search-box">
+    <input id="searchInput" type="search" placeholder="Search for phones, clothes, shoes...">
+    <button class="btn btn-primary" onclick="searchProducts()">Search</button>
+  </div>
+</div>
+
+<div class="request-area">
+  <div class="request-card">
+    <h2>What are you looking for?</h2>
+    <p>Post your request and receive offers from sellers who have what you need.</p>
+    <div class="request-row">
+      <input id="requestPreview" placeholder="Example: I need an iPhone 14 Pro Max">
+      <button class="btn btn-primary" onclick="startRequest()">Post a request</button>
+    </div>
+  </div>
+</div>
+
+<section id="categories">
+  <div class="section-heading">
+    <h2>Explore categories</h2>
+  </div>
+  <div class="categories">
+    <div class="category" onclick="filterCategory('Phones')"><span class="emoji">📱</span><strong>Phones</strong></div>
+    <div class="category" onclick="filterCategory('Fashion')"><span class="emoji">👕</span><strong>Fashion</strong></div>
+    <div class="category" onclick="filterCategory('Electronics')"><span class="emoji">💻</span><strong>Electronics</strong></div>
+    <div class="category" onclick="filterCategory('Shoes')"><span class="emoji">👟</span><strong>Shoes</strong></div>
+    <div class="category" onclick="filterCategory('Watches')"><span class="emoji">⌚</span><strong>Watches</strong></div>
+    <div class="category" onclick="filterCategory('Home')"><span class="emoji">🏠</span><strong>Home items</strong></div>
+    <div class="category" onclick="filterCategory('Beauty')"><span class="emoji">💄</span><strong>Beauty</strong></div>
+    <div class="category" onclick="filterCategory('Appliances')"><span class="emoji">🧊</span><strong>Appliances</strong></div>
+    <div class="category" onclick="filterCategory('Services')"><span class="emoji">🛠️</span><strong>Services</strong></div>
+  </div>
+</section>
+
+<section id="recommended">
+  <div class="section-heading">
+    <h2 id="productHeading">Recommended for you</h2>
+    <a href="#recommended" onclick="showAllProducts()">View all</a>
+  </div>
+
+  <div class="products" id="productGrid">
+    <article class="product" data-category="Phones" data-name="Smartphone">
+      <img src="https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=600" alt="Smartphone">
+      <div class="product-info">
+        <h3>Smartphone</h3>
+        <div class="price">Contact seller</div>
+        <div class="seller">Marketplace product</div>
+        <button class="btn btn-light" onclick="openModal('loginModal')">View product</button>
+      </div>
+    </article>
+
+    <article class="product" data-category="Fashion" data-name="Fashion outfit">
+      <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=600" alt="Fashion outfit">
+      <div class="product-info">
+        <h3>Fashion outfit</h3>
+        <div class="price">Contact seller</div>
+        <div class="seller">Marketplace product</div>
+        <button class="btn btn-light" onclick="openModal('loginModal')">View product</button>
+      </div>
+    </article>
+
+    <article class="product" data-category="Watches" data-name="Wristwatch">
+      <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600" alt="Wristwatch">
+      <div class="product-info">
+        <h3>Wristwatch</h3>
+        <div class="price">Contact seller</div>
+        <div class="seller">Marketplace product</div>
+        <button class="btn btn-light" onclick="openModal('loginModal')">View product</button>
+      </div>
+    </article>
+
+    <article class="product" data-category="Shoes" data-name="Sneakers">
+      <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600" alt="Sneakers">
+      <div class="product-info">
+        <h3>Sneakers</h3>
+        <div class="price">Contact seller</div>
+        <div class="seller">Marketplace product</div>
+        <button class="btn btn-light" onclick="openModal('loginModal')">View product</button>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="how" id="how">
+  <div class="section-heading">
+    <h2>How it works</h2>
+  </div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-number">1</div>
+      <h3>Tell us what you need</h3>
+      <p>Create an account and post a request describing the product or service you want.</p>
+    </div>
+    <div class="step">
+      <div class="step-number">2</div>
+      <h3>Receive seller offers</h3>
+      <p>Sellers who can meet your request can send you their offers and prices.</p>
+    </div>
+    <div class="step">
+      <div class="step-number">3</div>
+      <h3>Choose your seller</h3>
+      <p>Compare offers, communicate with sellers and decide who you want to buy from.</p>
+    </div>
+  </div>
+</section>
+
+<section class="join">
+  <h2>Are you a seller?</h2>
+  <p>Join the marketplace, create your shop and connect with customers looking for your products.</p>
+  <button class="btn btn-primary" onclick="openModal('sellerModal')">Register as a seller</button>
+</section>
+</main>
+
+<footer>
+  <div><strong>Everyday Update News</strong><br>Find It. Request It. Get It.</div>
+  <div>© <span id="year"></span> Everyday Update News. All rights reserved.</div>
+</footer>
+
+<!-- LOGIN -->
+<div class="modal" id="loginModal">
+  <div class="modal-content">
+    <button class="close" onclick="closeModals()">×</button>
+    <h2>Welcome back</h2>
+    <p>Log in to your marketplace account.</p>
+    <form onsubmit="demoSubmit(event,'Login')">
+      <label>Email address</label>
+      <input type="email" required placeholder="you@example.com">
+      <label>Password</label>
+      <input type="password" required placeholder="Your password">
+      <button class="btn btn-primary">Log in</button>
+    </form>
+    <p>New here? <span class="modal-link" onclick="switchModal('loginModal','registerModal')">Create an account</span></p>
+  </div>
+</div>
+
+<!-- BUYER REGISTRATION -->
+<div class="modal" id="registerModal">
+  <div class="modal-content">
+    <button class="close" onclick="closeModals()">×</button>
+    <h2>Create your buyer account</h2>
+    <p>Register to post requests and contact sellers.</p>
+    <form onsubmit="demoSubmit(event,'Buyer registration')">
+      <label>Full name</label>
+      <input required placeholder="Your full name">
+      <label>Email address</label>
+      <input type="email" required placeholder="you@example.com">
+      <label>Password</label>
+      <input type="password" minlength="8" required placeholder="At least 8 characters">
+      <button class="btn btn-primary">Continue to email verification</button>
+    </form>
+    <p>Are you a seller? <span class="modal-link" onclick="switchModal('registerModal','sellerModal')">Register as a seller</span></p>
+  </div>
+</div>
+
+<!-- SELLER REGISTRATION -->
+<div class="modal" id="sellerModal">
+  <div class="modal-content">
+    <button class="close" onclick="closeModals()">×</button>
+    <h2>Become a seller</h2>
+    <p>Apply to open your shop on the marketplace.</p>
+    <form onsubmit="demoSubmit(event,'Seller application')">
+      <label>Your full name</label>
+      <input required placeholder="Your full name">
+      <label>Business name</label>
+      <input required placeholder="Your business name">
+      <label>Email address</label>
+      <input type="email" required placeholder="you@example.com">
+      <label>Business phone number</label>
+      <input type="tel" required placeholder="Your phone number">
+      <label>Business location</label>
+      <input required placeholder="City and state">
+      <label>Password</label>
+      <input type="password" minlength="8" required placeholder="At least 8 characters">
+      <button class="btn btn-primary">Submit seller application</button>
+    </form>
+    <p>Seller accounts must be approved by the marketplace administrator before selling.</p>
+  </div>
+</div>
+
+<!-- REQUEST FORM -->
+<div class="modal" id="requestModal">
+  <div class="modal-content">
+    <button class="close" onclick="closeModals()">×</button>
+    <h2>Post what you need</h2>
+    <p>Sign in or register to publish your request.</p>
+    <form onsubmit="demoSubmit(event,'Buyer request')">
+      <label>What product or service do you need?</label>
+      <textarea id="requestDescription" required placeholder="Describe exactly what you are looking for..."></textarea>
+      <label>Category</label>
+      <select required>
+        <option value="">Choose category</option>
+        <option>Phones</option>
+        <option>Fashion</option>
+        <option>Electronics</option>
+        <option>Shoes</option>
+        <option>Watches</option>
+        <option>Home items</option>
+        <option>Beauty</option>
+        <option>Appliances</option>
+        <option>Services</option>
+        <option>Other</option>
+      </select>
+      <label>Your budget (₦)</label>
+      <input type="number" min="0" placeholder="Your budget">
+      <label>Reference photo (optional)</label>
+      <input type="file" accept="image/*">
+      <button class="btn btn-primary">Continue to login</button>
+    </form>
+  </div>
+</div>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+
+function openModal(id) {
+  closeModals();
+  document.getElementById(id).classList.add('show');
+}
+function closeModals() {
+  document.querySelectorAll('.modal').forEach(m => m.classList.remove('show'));
+}
+function switchModal(oldId,newId) {
+  closeModals();
+  openModal(newId);
+}
+function toggleMenu() {
+  document.getElementById('navigation').classList.toggle('open');
+}
+function startRequest() {
+  const value = document.getElementById('requestPreview').value.trim();
+  if (!value) {
+    alert('Please describe what you are looking for first.');
+    return;
+  }
+  document.getElementById('requestDescription').value = value;
+  openModal('requestModal');
+}
+function filterCategory(category) {
+  document.getElementById('productHeading').textContent = category + ' products';
+  let found = 0;
+  document.querySelectorAll('.product').forEach(product => {
+    const match = product.dataset.category === category;
+    product.style.display = match ? '' : 'none';
+    if (match) found++;
+  });
+  if (!found) {
+    document.getElementById('productGrid').innerHTML =
+      '<div class="empty-note">No sample products in this category yet. Seller products will appear here when the marketplace is connected.</div>';
+  }
+  document.getElementById('recommended').scrollIntoView({behavior:'smooth'});
+}
+function showAllProducts() {
+  document.getElementById('productHeading').textContent = 'Recommended for you';
+  document.querySelectorAll('.product').forEach(p => p.style.display = '');
+}
+function searchProducts() {
+  const query = document.getElementById('searchInput').value.toLowerCase().trim();
+  if (!query) {
+    showAllProducts();
+    return;
+  }
+  let found = 0;
+  document.querySelectorAll('.product').forEach(product => {
+    const match = (product.dataset.name + ' ' + product.dataset.category).toLowerCase().includes(query);
+    product.style.display = match ? '' : 'none';
+    if (match) found++;
+  });
+  document.getElementById('productHeading').textContent = 'Search results';
+  if (!found) {
+    document.getElementById('productGrid').innerHTML =
+      '<div class="empty-note">No matching sample products. You can post a request to let sellers find what you need.</div>';
+  }
+  document.getElementById('recommended').scrollIntoView({behavior:'smooth'});
+}
+function demoSubmit(event,formName) {
+  event.preventDefault();
+  alert(formName + ' screen is ready for the next development stage. Account creation, email verification and request submission will be connected to the secure backend next.');
+}
+document.querySelectorAll('.modal').forEach(modal => {
+  modal.addEventListener('click', e => {
+    if (e.target === modal) closeModals();
+  });
+});
+</script>
+
+</body>
+</html>
